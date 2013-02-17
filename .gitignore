@@ -1,0 +1,5 @@
+# ignore vim backup files
+*.orig
+
+# ignore git .orig files created during a merge/rebase
+*~

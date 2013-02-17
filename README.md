@@ -1,8 +1,12 @@
-# I just ran a rebase and messed up bad. How can I 
+# I just ran a rebase and messed up bad. How can I un-do it?
+
+This page describes a set of steps to create a git repository and simulate what happens if you `git rebase`d and got yourself into a bad state. Then an approach to un-do the bad rebase and start the rebase over.
+
+The sample command line snippets below are written in powershell, but the steps could easily be translated to anything.
 
 To get our repository into a bad state execute the following steps: `in powershell`
 
-## Declare a helper functions
+## Declare some helper functions we use later
 
 	# Helper function to dump a string to a file
 	function writeStringToFile($string, $fileName) {
@@ -11,6 +15,8 @@ To get our repository into a bad state execute the following steps: `in powershe
 	
 	# Helper function to give a 'pretty' graph of our git commits
 	function gitlog() {
+		# found on StackOverflow
+		# http://stackoverflow.com/questions/1838873/visualizing-branch-topology-in-git
 		git log --graph --full-history --all --color --pretty=format:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s"
 	}
 
@@ -19,18 +25,19 @@ To get our repository into a bad state execute the following steps: `in powershe
 	mkdir GitRebaseReflogSample
 	cd GitRebaseReflogSample
 	git init
-	$ignoreText = "# ignore vim backup files`n*.orig`n`n# ignore git .orig files created during a merge/rebase`n*~"
-	writeStringToFile $ignoreText ".gitignore"
+	$ignoreFileText = "# ignore vim backup files`n*.orig`n`n# ignore git .orig files created during a merge/rebase`n*~"
+	writeStringToFile $ignoreFileText ".gitignore"
 	git add .
 	git commit -m "added .gitignore file"
 
-## Create a blank file we will use for creating a merge conflict in.
+## Create a blank file we will use to simulate the merge conflict with.
 
 	writeStringToFile "" "file.md"
 	git add .
 	git commit -m "added empty file.md"
 
 ## In a different branch - place text into the file
+
 
 ````powershell
 git checkout -b pirate
@@ -64,7 +71,9 @@ Sed vel nunc eu nibh aliquet mollis. Vivamus suscipit, urna non varius lacinia, 
 ";
 
 writeStringToFile $lipsum "file.md"
+
 git commit . -m "added lipsum text"
+
 ```
 
 ## Switch back to the branch and take a look at the commit graph
@@ -73,16 +82,20 @@ git commit . -m "added lipsum text"
 	gitlog
 
 
-## Attempt to rebase master against it (you should get a conflict)
+## Attempt to rebase master against our branch (you should get a conflict)
 
 	git rebase master
 
-## We should be mid-rebase now with a conflict. Let's simulate a bad merge.
+## We should now be mid-rebase and with a conflict. Let's simulate a bad merge.
+
+By accepting the merged file we're simulating a bad merge and moving on through the rebase.
 
 	git add .
 	git rebase --continue
 
-## Now if you look at the gitlog you should see a single line of history commits.
+## Now if you look at the gitlog you should see a single line of commits.
+
+This is normally what we want, and why we do a rebase, but if a merge goes bad and you want to un-do, looking at this graph you might be wondering. `How can I un-do this whole thing and start over?`
 
 	gitlog
 
@@ -90,7 +103,7 @@ git commit . -m "added lipsum text"
 
 * How do we get back to our pre-rebase state so we can re-do the merge (but better)?
 
-This is one case where the git reflog comes in extremely handy.
+This is one case where the (git reflog)[http://www.kernel.org/pub/software/scm/git/docs/git-reflog.html] comes in extremely handy.
 
 	git reflog
 
@@ -105,3 +118,5 @@ Now copy the sha that is on the same line as that comment and run
 Now you can re-run your rebase again and possibly take better care of the merge this time around.
 
 As with much of Git, there are probably other ways around this problem, I'd love to hear if you have a different approach.
+
+> Happy Git'ing around!
