@@ -1,6 +1,6 @@
-# I just ran a rebase and messed up bad. How can I un-do it?
+# I just ran a rebase and messed up bad. How can I un-do it and start-over?
 
-This page describes a set of steps to create a git repository and simulate what happens if you `git rebase`d and got yourself into a bad state. Then an approach to un-do the bad rebase and start the rebase over.
+This page describes a set of steps to create a git repository and simulate what happens if you `git rebase`ed and got yourself into a bad state. Then an approach to un-do the bad rebase and start the rebase over.
 
 The sample command line snippets below are written in powershell, but the steps could easily be translated to anything.
 
