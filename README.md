@@ -111,7 +111,7 @@ If you run the `git reflog` command you will see the line where it says `checkou
 
 Now copy the sha that is on the same line as that comment and run
 
-	git rebase <sha> --hard
+	git reset <sha> --hard
 
 #BAM we're back in business!
 
