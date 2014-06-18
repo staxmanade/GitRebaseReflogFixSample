@@ -6,9 +6,9 @@ The sample command line snippets below are written in (and tested) in [zsh](http
 
 To get our repository into a bad state execute the following steps: `in your zsh command promt/bash terminal`
 
-## Declare some helpers I reference later functions we use later
+## Declare a helper I reference later in this tutorial
 
-I use the following `gitlog` alias, but you could replace `gitlog` in this walk-through with `gitk --all` to get a visual of our commit log.
+I use the following `gitlog` alias to quickly view the commit graph. You could replace `gitlog` in this walk-through with `gitk --all` to get a visual of the commit log.
 
     alias gitlog='git log --graph --full-history --all --color --pretty=format:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s"'
 
