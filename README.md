@@ -1,6 +1,8 @@
 GitRebaseReflogFixSample
 ========================
 
+> By: [@staxmanade](http://staxmanade.com)
+
 ## I just ran a rebase and messed up bad. How can I un-do it and start-over?
 
 This repo has two walk throughs. 
